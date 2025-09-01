@@ -1,13 +1,27 @@
 import json
 
 
+JSONFILE = "users.json"
+
+
+def load_user_file():
+    try:
+        with open(JSONFILE, "r") as file:
+            content = file.read().strip()
+            if content:
+                return json.loads(content)
+            else:
+                return []
+    except (json.JSONDecodeError, FileNotFoundError):
+        return []
+
+
 def filter_users_by_name(name):
     '''
     Filter users by name from a json file
     :param name: given user name
     '''
-    with open("users.json", "r") as file:
-        users = json.load(file)
+    users = load_user_file()
 
     filtered_users = [user for user in users if user["name"].lower() == name.lower()]
 
@@ -23,8 +37,7 @@ def filter_by_age(age):
     Filter users by age from a json file
     :param age: given age (int)
     '''
-    with open("users.json", "r") as file:
-        users = json.load(file)
+    users = load_user_file()
 
     filtered_users = [user for user in users if "age" in user and user["age"] == age]
 
@@ -40,8 +53,7 @@ def filter_by_email(email):
     Filter users by email from a json file
     :param email: given email
     '''
-    with open("users.json", "r") as file:
-        users = json.load(file)
+    users = load_user_file()
 
     filtered_users = [user for user in users if "email" in user and user["email"].lower() == email.lower()]
 
